@@ -4,16 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Camera Preview with Recording</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #video {
+            width: 400px;
+            height: 400px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background-color: #222;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Camera Preview</h1>
-    <div>
-        <video id="video" width="400" height="400" autoplay></video>
+    <div class="container">
+        <h1>Camera Preview</h1>
+        <div>
+            <video id="video" autoplay></video>
+        </div>
+        <button id="toggleButton" class="btn">Turn Video Off</button>
     </div>
     
     <script>
         let mediaRecorder;
         let chunks = [];
+        let videoPaused = false;
 
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true })
@@ -32,6 +80,19 @@
         } else {
             console.error('WebRTC is not supported in this browser');
         }
+
+        document.getElementById('toggleButton').addEventListener('click', function () {
+            let video = document.getElementById('video');
+            if (videoPaused) {
+                video.play();
+                videoPaused = false;
+                this.textContent = 'Turn Video Off';
+            } else {
+                video.pause();
+                videoPaused = true;
+                this.textContent = 'Turn Video On';
+            }
+        });
 
         document.getElementById('recordButton').addEventListener('click', function () {
             if (mediaRecorder && mediaRecorder.state === 'inactive') {
