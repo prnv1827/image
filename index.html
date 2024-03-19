@@ -31,7 +31,7 @@
             border: 2px solid #333;
             border-radius: 8px;
             background-color: #222;
-            filter: blur(0); /* Initially no blur */
+            filter: none; /* Initially no filter */
         }
 
         #video.off {
@@ -112,10 +112,12 @@
             if (videoPaused) {
                 video.play();
                 videoPaused = false;
+                video.classList.remove('off');
                 this.textContent = 'Turn Video Off';
             } else {
                 video.pause();
                 videoPaused = true;
+                video.classList.add('off');
                 this.textContent = 'Turn Video On';
             }
         });
